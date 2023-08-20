@@ -8,7 +8,9 @@ from user.models import User
 
 class Group(models.Model):
     """游戏团队，按团队进行管理"""
-    name = models.CharField(max_length=64, help_text="团队名称", )
+    name = models.CharField(max_length=64, help_text="团队名称", unique=True)
+    manager = models.ForeignKey(User, on_delete=models.SET_NULL, blank=True, null=True, help_text='管理者')
+    diamond = models.IntegerField(default=100000, help_text='管理者钻石数，用于发放给用户使用')
 
 
 class GroupMember(models.Model):
@@ -20,7 +22,4 @@ class GroupMember(models.Model):
     score = models.IntegerField()
 
 
-class Manager(models.Model):
-    manager = models.ForeignKey(User, on_delete=models.SET_NULL, blank=True, null=True, help_text='管理者')
-    diamond = models.IntegerField(default=100000, help_text='管理者钻石数，用于发放给用户使用')
-    group = models.ForeignKey(Group, on_delete=models.SET_NULL, blank=True, null=True, help_text='所管理的团队')
+
